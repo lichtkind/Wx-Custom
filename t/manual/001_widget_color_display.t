@@ -2,7 +2,7 @@
 
 use v5.12;
 use warnings;
-use lib 'lib', '../lib';
+use lib 'lib', '../lib', '../../lib';
 
 ColorDisplayTester->new->MainLoop( );
 exit 0;
