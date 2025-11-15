@@ -1,11 +1,10 @@
+
+# numeric value input with nudge buttons and a slider to dial and step size
+
+package Wx::Custom::Widget::NumericZoom;
 use v5.12;
 use warnings;
 use Wx;
-
-# combined widget with a slider that dials in a value between 0 and 1
-# and 2 butons that trigger and event to add or subtract this value
-
-package App::GUI::Juliagraph::Widget::SliderStep;
 use base qw/Wx::Panel/;
 my $resolution = 100;
 

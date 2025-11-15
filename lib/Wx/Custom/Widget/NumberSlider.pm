@@ -1,7 +1,7 @@
 
 # numeric value input with a display, slider and nudge buttons
 
-package Wx::Custom::Widget::NumberSlider;
+package Wx::Custom::Widget::NumericInput;
 use v5.12;
 use warnings;
 use Wx;
