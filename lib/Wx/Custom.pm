@@ -1,8 +1,9 @@
 
-package App::GUI::Wx::Widget::Custom;
+package Wx::Custom;
+our $VERSION = '0.1';
+
 use v5.12;
 use warnings;
-our $VERSION = '0.1';
 
 
 1;
@@ -13,11 +14,25 @@ __END__
 
 =head1 NAME
 
-App::GUI::Wx::Widget::Custom - special controls for graphics applications
+Wx::Custom - widgets and pages to simplify Wx apps
 
 =head1 SYNOPSIS
 
+
 =head1 DESCRIPTION
+
+=head1 WIDGETS
+
+=head2 ColorDisplay
+
+=head2 ColorToggle
+
+
+=head1 PANELS
+
+=head1 PAGES
+
+=head2 Color
 
 
 =head1 SEE ALSO
@@ -29,7 +44,7 @@ Herbert Breunung, <lichtkind@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright 202025 Herbert Breunung.
+Copyright 2025 Herbert Breunung.
 
 =head1 LICENSE
 

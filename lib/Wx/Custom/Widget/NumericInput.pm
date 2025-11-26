@@ -6,15 +6,18 @@ use v5.12;
 use warnings;
 use Wx;
 use base qw/Wx::Panel/;
+use Wx::Custom::Util qw/check_named_args/;
 
 sub new {
+    my $class = shift;
+
     my ( $class, $parent, $size, $init_value, $range, $value_name, $label, $help) = @_;
-    $size  //= [100, 20]; # x y
+    $size  //= [100, 20];               # default widget size x y
     $init_value //= 0;
-    $range //= [1, 10, 1]; # $min, $max, $delta
+    $range //= [1, 10, 1];              # $min, $max, $delta
     $range = [0, $range] unless ref $range;
-    unshift @$range, 0 if @$range == 1;
-    push    @$range, 1 if @$range == 2;
+    unshift @$range, 0 if @$range == 1; # default lower bound is 0
+    push    @$range, 1 if @$range == 2; # default value delta is 1
     return if ref $range ne 'ARRAY' or not @$range or $range->[0] >= $range->[1] or not defined $value_name;
     $label //= $value_name;
     $help  //= '';
