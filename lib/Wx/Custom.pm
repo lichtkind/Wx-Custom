@@ -14,9 +14,10 @@ __END__
 
 =head1 NAME
 
-Wx::Custom - widgets and pages to simplify Wx apps
+Wx::Custom - widgets and pages of widgets to simplify Wx apps
 
 =head1 SYNOPSIS
+
 
 
 =head1 DESCRIPTION
