@@ -1,7 +1,7 @@
 
 # numeric value input with nudge buttons and a slider to dial and step size
 
-package Wx::Custom::Widget::NumericZoom;
+package Wx::Custom::Widget::NumericZoomInput;
 use v5.12;
 use warnings;
 use Wx;
