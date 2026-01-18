@@ -2,10 +2,10 @@
 # square widget that displays a color, stores data and can react to clicks
 
 package Wx::Custom::Widget::ColorDisplay;
-use base qw/Wx::Panel/;
 use v5.12;
 use warnings;
 use Wx;
+use base qw/Wx::Panel/;
 
 sub new {
     my ($class, $parent, $size, $init_color ) = @_;

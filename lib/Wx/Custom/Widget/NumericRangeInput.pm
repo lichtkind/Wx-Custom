@@ -15,38 +15,37 @@ sub new {
       init_value => 0,
        min_value => 0,
        max_value => 10,
-     value_delta => 10,
+     value_delta =>  1,
+     slider_size => 100,
+            name => '',
             help => '',
     }, @_ );
+    return $arg unless ref $arg;
 
     my $self = $class->SUPER::new( $parent, -1);
-    my $lbl  = Wx::StaticText->new($self, -1, $label);
-    $self->{'value_min'}   = $range->[0];
-    $self->{'value_max'}   = $range->[1];
-    $self->{'value_delta'} = $range->[2];
-    $self->{'init_value'}  = $init_value;
-    $self->{'value_name'} = $value_name;
-    $self->{'help'} = $help;
-    $self->{'value'} = $init_value // $min;
+    $self->{'attr'} = $arg;
+    my $lbl  = Wx::StaticText->new($self, -1, $arg->{'name'});
+    $self->{'value'} = $arg->{'init_value'};
     $self->{'callback'} = sub {};
-    return unless $self->{'value_delta'} != 0;
 
-    my @l = map {length $_} $min, $min+$self->{'value_delta'}, $max-$self->{'value_delta'}, $max;
+    my @l = map {length $_}  $arg->{'min_value'}, $arg->{'min_value'} + $arg->{'value_delta'},  
+                             $arg->{'max_value'} - $arg->{'value_delta'}, $arg->{'max_value'};
     my $max_txt_size = 0;
     map {$max_txt_size = $_ if $max_txt_size < $_} @l;
     $self->{'widget'}{'txt'} = Wx::TextCtrl->new( $self, -1, $init_value, [-1,-1], [(6 * $max_txt_size) + 26,-1], &Wx::wxTE_RIGHT);
-    $self->{'widget'}{'button'}{'-'} = Wx::Button->new( $self, -1, '-', [-1,-1],[27, 27] );
-    $self->{'widget'}{'button'}{'+'} = Wx::Button->new( $self, -1, '+', [-1,-1],[27, 27] );
+    $self->{'widget'}{'button'}{'-'} = Wx::Button->new( $self, -1, '-', [-1,-1],[27,27] );
+    $self->{'widget'}{'button'}{'+'} = Wx::Button->new( $self, -1, '+', [-1,-1],[27,27] );
 
     $self->{'widget'}{'slider'} = Wx::Slider->new(
-        $self, -1, $init_value / $self->{'value_delta'}, $min / $self->{'value_delta'}, $max / $self->{'value_delta'},
-        [-1, -1], [$slider_size, -1], &Wx::wxSL_HORIZONTAL | &Wx::wxSL_BOTTOM ) if defined $slider_size and $slider_size;
+        $self, -1, $arg->{'init_value'} / $arg->{'value_delta'}, 
+        $arg->{'min_value'} / $arg->{'value_delta'}, $arg->{'max_value'} / $arg->{'value_delta'},
+        [-1, -1], [$arg->{'slider_size'}, -1], &Wx::wxSL_HORIZONTAL | &Wx::wxSL_BOTTOM ) if $arg->{'slider_size'};
 
-    $lbl->SetToolTip( $help );
-    $self->{'widget'}{'txt'}->SetToolTip( $help );
-    $self->{'widget'}{'slider'}->SetToolTip( $help ) if exists $self->{'widget'}{'slider'};
-    $self->{'widget'}{'button'}{'-'}->SetToolTip( 'decrease '.((defined $value_name) ? $value_name.' ':'').'by '.$self->{'value_delta'} );
-    $self->{'widget'}{'button'}{'+'}->SetToolTip( 'increase '.((defined $value_name) ? $value_name.' ':'').'by '.$self->{'value_delta'} );
+    $lbl->SetToolTip( $arg->{'help'} );
+    $self->{'widget'}{'txt'}->SetToolTip( $arg->{'help'} );
+    $self->{'widget'}{'slider'}->SetToolTip( $arg->{'help'} ) if exists $self->{'widget'}{'slider'};
+    $self->{'widget'}{'button'}{'-'}->SetToolTip( 'decrease '.(($arg->{'name'}) ? $arg->{'name'}.' ':'').'by '.$arg->{'value_delta'} );
+    $self->{'widget'}{'button'}{'+'}->SetToolTip( 'increase '.(($arg->{'name'}) ? $arg->{'name'}.' ':'').'by '.$arg->{'value_delta'} );
 
     my $sizer = Wx::BoxSizer->new(&Wx::wxHORIZONTAL);
     my $attr = &Wx::wxLEFT | &Wx::wxALIGN_CENTER_VERTICAL | &Wx::wxALIGN_LEFT;
@@ -61,7 +60,7 @@ sub new {
     Wx::Event::EVT_TEXT( $self, $self->{'widget'}{'txt'}, sub {
         my ($self, $cmd) = @_;
         my $value = $cmd->GetString;
-        $value = $self->{'init_value'} if not defined $value;
+        $value =  $self->{'attr'}{'init_value'} if not defined $value;
         $self->SetValue( $value );
     });
     Wx::Event::EVT_BUTTON( $self, $self->{'widget'}{'button'}{'-'}, sub {
